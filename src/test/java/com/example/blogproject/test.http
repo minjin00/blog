@@ -1,0 +1,9 @@
+### Get all users\
+### 아이디 중복 확인
+GET http://localhost:8080/users/check-username?username={username}
+Content-Type: application/json
+
+###
+
+GET http://localhost:8080/api/users/check-email?email={email}
+Content-Type: application/json

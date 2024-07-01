@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>minlog</title>
+  <link rel="stylesheet" th:href="@{/main.css}">
+
+</head>
+<body>
+<header>
+  <div class="container">
+    <div class="logo">민로그 </div>
+    <div class="login">
+      <a href="#" th:href="@{/minlog/loginform}">
+       <button>로그인</button>
+      </a>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="posts">
+    <div class="post">
+      <img src="이미지_URL" alt="게시글 이미지">
+      <h4>작은 제목</h4>
+      <p class="content">글 내용이 여기에 들어갑니다. 게시글의 간략한 내용을 표시합니다.</p>
+      <div class="meta">
+        <span class="date">작성 날짜: 2024-06-19</span>
+        <span class="comments">댓글 수: 10</span>
+      </div>
+      <hr>
+      <div class="author">
+        <img src="작성자_사진_URL" alt="작성자 사진" class="author-photo">
+        <span class="author-name">작성자 닉네임</span>
+        <span class="likes">❤️ 100</span>
+      </div>
+    </div>
+    <div class="post">
+      <img src="이미지_URL" alt="게시글 이미지">
+      <h4>작은 제목</h4>
+      <p class="content">글 내용이 여기에 들어갑니다. 게시글의 간략한 내용을 표시합니다.</p>
+      <div class="meta">
+        <span class="date">작성 날짜: 2024-06-19</span>
+        <span class="comments">댓글 수: 10</span>
+      </div>
+      <hr>
+      <div class="author">
+        <img src="작성자_사진_URL" alt="작성자 사진" class="author-photo">
+        <span class="author-name">작성자 닉네임</span>
+        <span class="likes">❤️ 100</span>
+      </div>
+    </div>
+    <div class="post">
+      <img src="이미지_URL" alt="게시글 이미지">
+      <h4>작은 제목</h4>
+      <p class="content">글 내용이 여기에 들어갑니다. 게시글의 간략한 내용을 표시합니다.</p>
+      <div class="meta">
+        <span class="date">작성 날짜: 2024-06-19</span>
+        <span class="comments">댓글 수: 10</span>
+      </div>
+      <hr>
+      <div class="author">
+        <img src="작성자_사진_URL" alt="작성자 사진" class="author-photo">
+        <span class="author-name">작성자 닉네임</span>
+        <span class="likes">❤️ 100</span>
+      </div>
+    </div>
+    <!-- 더 많은 게시글 필요 시 추가 -->
+  </div>
+</main>
+</body>
+
+<!--<script>-->
+<!--  document.getElementById('registerForm').addEventListener('submit', function(event) {-->
+<!--    event.preventDefault();-->
+<!--    const formData = new FormData(this);-->
+<!--    const data = Object.fromEntries(formData.entries());-->
+
+<!--    fetch('/api/register', {-->
+<!--      method: 'POST',-->
+<!--      headers: {-->
+<!--        'Content-Type': 'application/json'-->
+<!--      },-->
+<!--      body: JSON.stringify(data)-->
+<!--    })-->
+<!--            .then(response => response.text())-->
+<!--            .then(result => alert(result))-->
+<!--            .catch(error => console.error('Error:', error));-->
+<!--  });-->
+<!--</script>-->
+
+</html>

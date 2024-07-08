@@ -5,47 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>회원가입</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+    /* 기존 스타일 유지 */
+    .validation-message {
+      font-size: 0.8em;
+      margin-top: 5px;
     }
-    .signup-form {
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 400px;
+    .valid {
+      color: green;
     }
-    .signup-form h2 {
-      margin-bottom: 20px;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 8px;
-      box-sizing: border-box;
-    }
-    .form-group button {
-      width: 100%;
-      padding: 10px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .form-group button:hover {
-      background-color: #45a049;
+    .invalid {
+      color: red;
     }
   </style>
 </head>
@@ -56,14 +25,15 @@
     <div class="form-group">
       <label for="username">아이디</label>
       <input type="text" id="username" name="username" required>
+      <p id="username-validation" class="validation-message"></p>
     </div>
     <div class="form-group">
       <label for="password">암호</label>
       <input type="password" id="password" name="password" required>
     </div>
     <div class="form-group">
-      <label for="confirm_password">암호확인</label>
-      <input type="password" id="confirm_password" name="confirm_password" required>
+      <label for="checkPassword">암호확인</label>
+      <input type="password" id="checkPassword" name="checkPassword" required>
     </div>
     <div class="form-group">
       <label for="name">이름</label>
@@ -72,41 +42,55 @@
     <div class="form-group">
       <label for="email">이메일</label>
       <input type="email" id="email" name="email" required>
+      <p id="email-validation" class="validation-message"></p>
     </div>
     <div class="form-group">
-        <button type="submit">회원가입</button>
+      <button type="submit">회원가입</button>
     </div>
   </form>
+  <p th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></p>
 </div>
-
 <script>
   async function checkUsername() {
     const username = document.getElementById('username').value;
-    const response = await fetch(`/api/check-username?username=${username}`);
+    const validationMessage = document.getElementById('username-validation');
+    if (username.length === 0) {
+      validationMessage.textContent = '';
+      return;
+    }
+    const response = await fetch(`/api/users/check-username?username=${username}`);
     const result = await response.json();
     if (result.exists) {
-      alert('아이디가 중복되었습니다.');
+      validationMessage.textContent = '이미 사용 중인 아이디입니다.';
+      validationMessage.className = 'validation-message invalid';
     } else {
-      alert('아이디를 사용할 수 있습니다.');
+      validationMessage.textContent = '사용 가능한 아이디입니다.';
+      validationMessage.className = 'validation-message valid';
     }
   }
 
   async function checkEmail() {
     const email = document.getElementById('email').value;
-    const response = await fetch(`/api/check-email?email=${email}`);
+    const validationMessage = document.getElementById('email-validation');
+    if (email.length === 0) {
+      validationMessage.textContent = '';
+      return;
+    }
+    const response = await fetch(`/api/users/check-email?email=${email}`);
     const result = await response.json();
     if (result.exists) {
-      alert('이메일이 중복되었습니다.');
+      validationMessage.textContent = '이미 사용 중인 이메일입니다.';
+      validationMessage.className = 'validation-message invalid';
     } else {
-      alert('이메일을 사용할 수 있습니다.');
+      validationMessage.textContent = '사용 가능한 이메일입니다.';
+      validationMessage.className = 'validation-message valid';
     }
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('username').addEventListener('blur', checkUsername);
-    document.getElementById('email').addEventListener('blur', checkEmail);
+    document.getElementById('username').addEventListener('input', checkUsername);
+    document.getElementById('email').addEventListener('input', checkEmail);
   });
 </script>
-
 </body>
 </html>

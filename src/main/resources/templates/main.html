@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>minlog</title>
-  <link rel="stylesheet" th:href="@{/main.css}">
+  <title>velog</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
   <script src="https://kit.fontawesome.com/a4b20a4cb1.js" crossorigin="anonymous"></script>
 
 </head>
@@ -14,65 +14,86 @@
     <div class="logo">
       <img src="/img/logo.png" alt="로고">
     </div>
-    <i class="fa-regular fa-bell" style="font-size: 20px"></i>
-    <i class="fa-solid fa-magnifying-glass" style="font-size: 20px"></i>
-      <div class="newPost">
-        <a href="#" th:href="@{/minlog/postform}">
-          <button>새 글 작성</button>
-        </a>
-      </div>
-    <div class="login">
-      <a href="#" th:href="@{/minlog/loginform}">
-       <button>로그인</button>
-      </a>
+    <div class="header-right">
+      <i class="fa-regular fa-bell" style="font-size: 20px"></i>
+      <i class="fa-solid fa-magnifying-glass" style="font-size: 20px"></i>
+
+      <!-- 로그인한 경우 -->
+      <th:block th:if="${session.user != null}">
+        <div class="newPost">
+          <a href="#" th:href="@{/post/new}">
+            <button>새 글 작성</button>
+          </a>
+        </div>
+        <div class="user-profile">
+          <img th:src="${session.user.profileImageUrl}" alt="프로필 이미지" class="profile-image">
+        </div>
+      </th:block>
+
+      <!-- 로그인하지 않은 경우 -->
+      <th:block th:unless="${session.user != null}">
+        <div class="login">
+          <a href="#" th:href="@{/login}">
+            <button>로그인</button>
+          </a>
+        </div>
+      </th:block>
     </div>
   </div>
 </header>
 <main>
   <div class="posts">
+<!--    <div class="posts">-->
+<!--      <div class="post" th:each="post : ${posts}">-->
+<!--        <img th:src="${post.imageUrl}" alt="게시글 이미지">-->
+<!--        <div class="post-content">-->
+<!--          <h4 th:text="${post.title}">작은 제목</h4>-->
+<!--          <p class="content" th:text="${post.content}">글 내용이 여기에 들어갑니다. 게시글의 간략한 내용을 표시합니다.</p>-->
+<!--          <div class="meta">-->
+<!--            <span class="date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성 날짜</span>-->
+<!--            <span class="views" th:text="|조회수: ${post.viewCount}|">조회수</span>-->
+<!--          </div>-->
+<!--          <hr>-->
+<!--          <div class="author">-->
+<!--            <img th:src="${post.user.profileImageUrl}" alt="작성자 사진" class="user-photo">-->
+<!--            <span class="user-name" th:text="${post.user.username}">작성자 닉네임</span>-->
+<!--            <span class="likes" th:text="|❤️ ${post.likeCount}|">좋아요 수</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="post">
       <img src="이미지_URL" alt="게시글 이미지">
-      <h4>작은 제목</h4>
-      <p class="content">글 내용이 여기에 들어갑니다. 게시글의 간략한 내용을 표시합니다.</p>
-      <div class="meta">
-        <span class="date">작성 날짜: 2024-06-19</span>
-        <span class="comments">댓글 수: 10</span>
-      </div>
-      <hr>
-      <div class="author">
-        <img src="작성자_사진_URL" alt="작성자 사진" class="author-photo">
-        <span class="author-name">작성자 닉네임</span>
-        <span class="likes">❤️ 100</span>
+      <div class="post-content">
+        <h4>게시글 제목</h4>
+        <p class="content">글 내용이 여기에 들어갑니다. 게시글의 간략한 내용을 표시합니다.</p>
+        <div class="meta">
+          <span class="date">2024년 6월 24일</span>
+          <span class="comments">· 5개의 댓글</span>
+        </div>
+        <hr>
+        <div class="author">
+          <img src="작성자_사진_URL" alt="작성자 사진" class="author-photo">
+          <span class="author-name">작성자 닉네임</span>
+          <span class="likes">♥ 49</span>
+        </div>
       </div>
     </div>
     <div class="post">
       <img src="이미지_URL" alt="게시글 이미지">
-      <h4>작은 제목</h4>
-      <p class="content">글 내용이 여기에 들어갑니다. 게시글의 간략한 내용을 표시합니다.</p>
-      <div class="meta">
-        <span class="date">작성 날짜: 2024-06-19</span>
-        <span class="comments">댓글 수: 10</span>
-      </div>
-      <hr>
-      <div class="author">
-        <img src="작성자_사진_URL" alt="작성자 사진" class="author-photo">
-        <span class="author-name">작성자 닉네임</span>
-        <span class="likes">❤️ 100</span>
-      </div>
-    </div>
-    <div class="post">
-      <img src="이미지_URL" alt="게시글 이미지">
-      <h4>작은 제목</h4>
-      <p class="content">글 내용이 여기에 들어갑니다. 게시글의 간략한 내용을 표시합니다.</p>
-      <div class="meta">
-        <span class="date">작성 날짜: 2024-06-19</span>
-        <span class="comments">댓글 수: 10</span>
-      </div>
-      <hr>
-      <div class="author">
-        <img src="작성자_사진_URL" alt="작성자 사진" class="author-photo">
-        <span class="author-name">작성자 닉네임</span>
-        <span class="likes">❤️ 100</span>
+      <div class="post-content">
+        <h4>게시글 제목</h4>
+        <p class="content">글 내용이 여기에 들어갑니다. 게시글의 간략한 내용을 표시합니다.</p>
+        <div class="meta">
+          <span class="date">2024년 6월 24일</span>
+          <span class="comments">· 5개의 댓글</span>
+        </div>
+        <hr>
+        <div class="author">
+          <img src="작성자_사진_URL" alt="작성자 사진" class="author-photo">
+          <span class="author-name">작성자 닉네임</span>
+          <span class="likes">♥ 49</span>
+        </div>
       </div>
     </div>
     <!-- 더 많은 게시글 필요 시 추가 -->

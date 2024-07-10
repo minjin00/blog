@@ -26,6 +26,8 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    private String imageUrl;
+
     @Column(name = "create_date", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createDate;
 
@@ -40,6 +42,9 @@ public class Post {
 
     @Column(name = "view_count", columnDefinition = "INT DEFAULT 0")
     private int viewCount;
+
+    @Column(name = "like_count", columnDefinition = "INT DEFAULT 0")
+    private int likeCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

@@ -4,6 +4,7 @@ import com.example.blogproject.domain.User;
 import com.example.blogproject.dto.LoginResult;
 import com.example.blogproject.repository.UserRepository;
 import com.example.blogproject.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.NoSuchElementException;
 
 //회원 정보를 위함
 @Controller
 @Slf4j
-//@RequestMapping("/minlog")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -26,9 +27,9 @@ public class UserController {
     // 로그인 폼
     @GetMapping("/loginform")
     public String loginForm(HttpSession session) {
-        if (session.getAttribute("user") != null) {
-            return "redirect:/blog";
-        }
+//        if (session.getAttribute("user") != null) {
+//            return "redirect:/";
+//        }
         return "loginform";
     }
 
@@ -51,7 +52,7 @@ public class UserController {
         try {
             boolean isRegistered = userService.registerUser(user);
             if (isRegistered) {
-                return "redirect:/loginform?registered=true";
+                return "welcome";
             } else {
                 redirectAttributes.addFlashAttribute("errorMessage", "이미 존재하는 사용자명 또는 이메일입니다.");
                 return "redirect:/userregform";
@@ -68,29 +69,25 @@ public class UserController {
         return "loginform";
     }
 
-    // 로그인
-//    @PostMapping("/login")
-//    public String login(@RequestParam("username") String username,
-//                        @RequestParam("password") String password,
-//                        HttpSession session,
-//                        RedirectAttributes redirectAttributes) {
-//        log.info("Login attempt for user: {}", username);
-//
-//        LoginResult result = userService.login(username, password);
-//        if (result.isSuccess()) {
-//            session.setAttribute("user", result.getUser());
-//            return "redirect:/blog";
-//        } else {
-//            log.warn("Login failed: {}", result.getMessage());
-//            redirectAttributes.addFlashAttribute("error", result.getMessage());
-//            return "redirect:/loginform";
-//        }
-//    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute User user, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        try {
+            userService.login(user.getUsername(), user.getPassword(), request);
+            return "redirect:/";  // 로그인 성공 시 / 로 돌아감
+        } catch (NoSuchElementException e) {
+            redirectAttributes.addFlashAttribute("errorMSG", e.getMessage());
+            return "redirect:/loginform";
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMSG", e.getMessage());
+            return "redirect:/loginform";
+        }
+    }
 
     @GetMapping("/{username}")
     public String userPage(@PathVariable String username, Model model, Principal principal) {
         if (principal == null || !principal.getName().equals(username)) {
-            return "redirect:/loginform";
+            return "redirect:/";
         }
         User user = userService.findByUsername(username);
         model.addAttribute("user", user);
@@ -100,7 +97,7 @@ public class UserController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/loginform";
+        return "redirect:/";
     }
 
 }

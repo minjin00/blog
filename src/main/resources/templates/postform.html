@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>새 글 작성</title>
+    <link rel="stylesheet" th:href="@{/css/postform.css}">
+</head>
+<body>
+<div class="container">
+    <h1>새 글 작성</h1>
+    <form th:action="@{/write}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+
+        <div class="form-group">
+            <label for="tags">태그</label>
+            <input type="text" id="tags" name="tags">
+        </div>
+
+        <div class="form-group">
+            <label for="content">내용</label>
+            <textarea id="content" name="content" rows="10" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="image">이미지 업로드</label>
+            <input type="file" id="image" name="image" accept="image/*" multiple>
+            <div id="imagePreview"></div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" name="action" value="draft">임시 저장</button>
+            <button type="submit" name="action" value="publish">출간하기</button>
+        </div>
+    </form>
+</div>
+
+<script th:inline="javascript">
+    document.getElementById('image').addEventListener('change', function(event) {
+        var preview = document.getElementById('imagePreview');
+        preview.innerHTML = '';
+
+        Array.from(event.target.files).forEach(file => {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.maxWidth = '200px';
+                img.style.maxHeight = '200px';
+                img.style.margin = '5px';
+
+                var downloadLink = document.createElement('a');
+                downloadLink.href = e.target.result;
+                downloadLink.download = file.name;
+                downloadLink.textContent = '다운로드';
+                downloadLink.style.display = 'block';
+
+                var container = document.createElement('div');
+                container.appendChild(img);
+                container.appendChild(downloadLink);
+                preview.appendChild(container);
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+
+    document.getElementById('saveAsDraft').addEventListener('click', function() {
+        var form = document.querySelector('form');
+        var formData = new FormData(form);
+        formData.append('isDraft', 'true');
+
+        fetch('/post/draft', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    alert('임시 저장되었습니다.');
+                } else {
+                    alert('임시 저장에 실패했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('임시 저장 중 오류가 발생했습니다.');
+            });
+    });
+</script>
+</body>
+</html>

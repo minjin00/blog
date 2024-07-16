@@ -31,6 +31,10 @@ public class User {
     @Column(name = "registration_date", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime registrationDate;
 
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
+
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_roles",

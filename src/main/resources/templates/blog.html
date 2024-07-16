@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title th:text="${user.username} + '의 블로그'"></title>
+  <title>velog</title>
   <style>
     body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; }
     .container { max-width: 800px; margin: auto; }
@@ -14,9 +14,9 @@
 <div class="container">
   <div class="profile">
 <!--    <img th:src="${user.profileImageUrl}" alt="프로필 이미지" onerror="this.src='/default-profile.jpg'">-->
-    <h1 th:text="${user.username} + '의 블로그'"></h1>
+    <h1 >성공 </h1>
 <!--    <p th:text="${user.bio}">사용자 소개</p>-->
-    <p>가입일: <span th:text="${#temporals.format(user.registrationDate, 'yyyy-MM-dd')}"></span></p>
+<!--    <p>가입일: <span th:text="${#temporals.format(user.registrationDate, 'yyyy-MM-dd')}"></span></p>-->
   </div>
   <a th:href="@{/logout}"> 로그아웃 </a>
   <!-- 여기에 블로그 포스트 목록 등을 추가할 수 있습니다 -->

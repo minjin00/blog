@@ -8,17 +8,20 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "tags")
+@Table(name = "series")
 @Getter @Setter
 @NoArgsConstructor
-public class Tag {
+public class Series {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tag_id")
     private Long id;
 
-    @Column(unique = true, name = "tag_name")
-    private String tagName;
+    private String seriesName;
 
-    @ManyToMany(mappedBy = "tags")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "blog_id")
+    private Blog blog;
+
+    @OneToMany(mappedBy = "series", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("createdAt ASC")
     private List<Post> posts;
 }

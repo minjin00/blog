@@ -1,31 +1,39 @@
 package com.example.blogproject.service;
 
 import com.example.blogproject.domain.Post;
+import com.example.blogproject.domain.User;
 import com.example.blogproject.repository.PostRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class PostService {
+
     private final PostRepository postRepository;
-    @Autowired
-    public PostService(PostRepository postRepository) {
-        this.postRepository = postRepository;
+
+    public void savePost(Post post) {
+        postRepository.save(post);
     }
+
 
     public List<Post> getAllPosts() {
         return postRepository.findAll();
     }
 
-    public Optional<Post> getPostById(Long id) {
-        return postRepository.findById(id);
+    public Page<Post> getPostsPage(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        return postRepository.findAll(pageRequest);
     }
 
     public Post createPost(Post post) {
@@ -44,19 +52,6 @@ public class PostService {
         return postRepository.findByUserId(userId);
     }
 
-    public void incrementViewCount(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
-        post.setViewCount(post.getViewCount() + 1);
-        postRepository.save(post);
-    }
-
-    public void likePost(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
-        post.setLikeCount(post.getLikeCount() + 1);
-        postRepository.save(post);
-    }
 
 
 

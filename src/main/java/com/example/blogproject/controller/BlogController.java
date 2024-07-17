@@ -11,7 +11,9 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +43,21 @@ public class BlogController {
         model.addAttribute("posts", userPosts);
         return "blog";
 
+    }
+
+    @GetMapping("/")
+    public String home(@RequestParam(required = false) String keyword,
+                       @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+                       Model model) {
+        Page<Post> posts;
+        if (keyword != null && !keyword.isEmpty()) {
+            posts = postService.searchPosts(keyword, keyword, pageable);
+        } else {
+            posts = postService.getAllPosts(pageable);
+        }
+        model.addAttribute("posts", posts);
+        model.addAttribute("keyword", keyword);
+        return "main";
     }
 
 

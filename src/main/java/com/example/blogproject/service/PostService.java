@@ -27,8 +27,8 @@ public class PostService {
     }
 
 
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public Page<Post> getAllPosts(Pageable pageable) {
+        return postRepository.findAll(pageable);
     }
 
     public Page<Post> getPostsPage(int page, int size) {
@@ -36,17 +36,20 @@ public class PostService {
         return postRepository.findAll(pageRequest);
     }
 
-    public Post createPost(Post post) {
-        return postRepository.save(post);
+    public Page<Post> searchPosts(String searchType, String keyword, Pageable pageable) {
+        switch (searchType) {
+            case "username":
+                return postRepository.findByUser_UsernameContaining(keyword, pageable);
+            case "title":
+                return postRepository.findByTitleContaining(keyword, pageable);
+            case "content":
+                return postRepository.findByContentContaining(keyword, pageable);
+            default:
+                throw new IllegalArgumentException("Invalid search type: " + searchType);
+        }
     }
 
-    public Post updatePost(Post post) {
-        return postRepository.save(post);
-    }
 
-    public void deletePost(Long id) {
-        postRepository.deleteById(id);
-    }
 
     public List<Post> getPostsByUser(Long userId) {
         return postRepository.findByUserId(userId);

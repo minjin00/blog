@@ -166,3 +166,30 @@ main {
     color: white;
     border-color: #007bff;
 }
+
+.search-form {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.search-form input[type="text"] {
+    width: 150px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
+}
+
+.search-form button {
+    padding: 10px 20px;
+    background-color: #12b886;
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.pagination .current {
+    font-weight: bold;
+    color: #12b886;
+}

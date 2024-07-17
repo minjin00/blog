@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -31,7 +34,7 @@ public class PostController {
     private final PostService postService;
     private final TagService tagService;
 
-    @GetMapping("/")
+    @GetMapping("/posts")
     public String listPosts(Model model,
                             @RequestParam(defaultValue = "0") int page,
                             @RequestParam(defaultValue = "15") int size) {
@@ -85,6 +88,20 @@ public class PostController {
         }
         return tagSet;
     }
+
+    @GetMapping("/search")
+    public String searchPosts(@RequestParam String searchType,
+                              @RequestParam String keyword,
+                              @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+                              Model model) {
+        Page<Post> posts = postService.searchPosts(searchType, keyword, pageable);
+        model.addAttribute("posts", posts);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("keyword", keyword);
+        return "main";
+    }
+
+
 
 
 

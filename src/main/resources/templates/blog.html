@@ -2,24 +2,38 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>velog</title>
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; }
-    .container { max-width: 800px; margin: auto; }
-    .profile { background-color: #f4f4f4; padding: 20px; border-radius: 5px; }
-    .profile img { width: 100px; height: 100px; border-radius: 50%; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${user.username + posts}"></title>
+  <link rel="stylesheet" th:href="@{/css/blog.css}">
 </head>
 <body>
-<div class="container">
-  <div class="profile">
-<!--    <img th:src="${user.profileImageUrl}" alt="프로필 이미지" onerror="this.src='/default-profile.jpg'">-->
-    <h1 >성공 </h1>
-<!--    <p th:text="${user.bio}">사용자 소개</p>-->
-<!--    <p>가입일: <span th:text="${#temporals.format(user.registrationDate, 'yyyy-MM-dd')}"></span></p>-->
-  </div>
-  <a th:href="@{/logout}"> 로그아웃 </a>
-  <!-- 여기에 블로그 포스트 목록 등을 추가할 수 있습니다 -->
-</div>
+<header>
+  <h1 th:text="${user.username + '의 블로그'}">사용자 블로그</h1>
+  <nav>
+    <a th:href="@{/}">메인으로</a>
+    <a th:href="@{/write}">새 글 작성</a>
+  </nav>
+</header>
+
+<main>
+  <section class="user-info">
+    <img th:src="${user.profileImageUrl}" alt="프로필 이미지">
+    <h2 th:text="${user.username}">사용자 이름</h2>
+  </section>
+
+  <section class="user-posts">
+    <h3>작성한 글</h3>
+    <ul>
+      <li th:each="post : ${posts}">
+        <a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">게시글 제목</a>
+        <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</span>
+      </li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2024 My Blog Project</p>
+</footer>
 </body>
 </html>

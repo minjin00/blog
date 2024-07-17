@@ -74,25 +74,16 @@ public class UserController {
     public String login(@ModelAttribute User user, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         try {
             userService.login(user.getUsername(), user.getPassword(), request);
-            return "redirect:/";  // 로그인 성공 시 / 로 돌아감
+            return "redirect:/";
         } catch (NoSuchElementException e) {
-            redirectAttributes.addFlashAttribute("errorMSG", e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "아이디가 존재하지 않습니다.");
             return "redirect:/loginform";
         } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("errorMSG", e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
             return "redirect:/loginform";
         }
     }
 
-    @GetMapping("/{username}")
-    public String userPage(@PathVariable String username, Model model, Principal principal) {
-        if (principal == null || !principal.getName().equals(username)) {
-            return "redirect:/";
-        }
-        User user = userService.findByUsername(username);
-        model.addAttribute("user", user);
-        return "blog";
-    }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {

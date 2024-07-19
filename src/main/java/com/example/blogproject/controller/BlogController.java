@@ -37,7 +37,7 @@ public class BlogController {
             return "redirect:/";
         }
         User user = userService.findByUsername(username);
-        List<Post> userPosts = postService.getPostsByUser(user.getId());
+        List<Post> userPosts = postService.getPublishedPostsByUser(user);
 
         model.addAttribute("user", user);
         model.addAttribute("posts", userPosts);
@@ -49,7 +49,7 @@ public class BlogController {
     public String home(@RequestParam(required = false) String keyword,
                        @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
                        Model model) {
-        Page<Post> posts;
+        Page<Post> posts = postService.getAllPosts(pageable);
         if (keyword != null && !keyword.isEmpty()) {
             posts = postService.searchPosts(keyword, keyword, pageable);
         } else {

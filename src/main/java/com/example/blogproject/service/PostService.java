@@ -22,18 +22,19 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public void savePost(Post post) {
-        postRepository.save(post);
+    public Post savePost(Post post, boolean isDraft) {
+        post.setDraft(isDraft);
+        return postRepository.save(post);
     }
 
 
     public Page<Post> getAllPosts(Pageable pageable) {
-        return postRepository.findAll(pageable);
+        return postRepository.findAllByIsDraftFalse(pageable);
     }
 
     public Page<Post> getPostsPage(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        return postRepository.findAll(pageRequest);
+        return postRepository.findAllByIsDraftFalse(pageRequest);
     }
 
     public Page<Post> searchPosts(String searchType, String keyword, Pageable pageable) {
@@ -47,15 +48,27 @@ public class PostService {
             default:
                 throw new IllegalArgumentException("Invalid search type: " + searchType);
         }
+
+    }
+
+    public List<Post> getDraftsByUser(User user) {
+        return postRepository.findByUserAndIsDraftTrue(user);
     }
 
 
-
-    public List<Post> getPostsByUser(Long userId) {
-        return postRepository.findByUserId(userId);
+    public List<Post> getPublishedPostsByUser(User user) {
+        return postRepository.findByUserAndIsDraftFalse(user);
     }
 
 
+    public Post getPostById(Long id) {
+        return postRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("게시글이 존재하지 않습니다."));
+    }
+
+    public Post updatePost(Post post) {
+        return postRepository.save(post);
+    }
 
 
 }

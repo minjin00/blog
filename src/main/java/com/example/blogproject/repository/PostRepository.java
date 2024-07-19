@@ -12,9 +12,13 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByUserId(Long userId);
+    Page<Post> findAllByIsDraftFalse(Pageable pageable);
+    List<Post> findByUserAndIsDraftTrue(User user);
+    List<Post> findByUserAndIsDraftFalse(User user);
 
     Page<Post> findByUser_UsernameContaining(String username, Pageable pageable); //이름 검색
     Page<Post> findByTitleContaining(String title, Pageable pageable); //제목 검색
     Page<Post> findByContentContaining(String content, Pageable pageable); //내용 검색
+
 
 }

@@ -26,6 +26,7 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column(name = "image_url")
     private String imageUrl;
 
     @Column(name = "created_at", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
@@ -37,8 +38,8 @@ public class Post {
     @Column(name = "is_published", columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean published;
 
-    @Column(name = "is_private", columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private boolean isPrivate;
+    @Column(name = "is_draft", columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean isDraft = false; //임시저장 여부
 
     @Column(name = "view_count", columnDefinition = "INT DEFAULT 0")
     private int viewCount;

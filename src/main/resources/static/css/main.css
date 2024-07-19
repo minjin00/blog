@@ -193,3 +193,13 @@ main {
     font-weight: bold;
     color: #12b886;
 }
+
+.post-link {
+    text-decoration: none;
+    /*color: inherit;*/
+    display: block;
+}
+
+.post-link:hover {
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}

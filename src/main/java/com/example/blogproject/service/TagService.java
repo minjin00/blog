@@ -18,7 +18,7 @@ public class TagService {
     }
 
     public Tag saveTag(Tag tag) {
-        Optional<Tag> existingTag = tagRepository.findByTagName(tag.getTagName());
+        Optional<Tag> existingTag = tagRepository.findByName(tag.getName());
         if(existingTag.isPresent()) {
             return existingTag.get();
         }
@@ -27,10 +27,10 @@ public class TagService {
     }
 
     public Tag findOrCreateTag(String name) {
-        return tagRepository.findByTagName(name)
+        return tagRepository.findByName(name)
                 .orElseGet(() -> {
                     Tag newTag = new Tag();
-                    newTag.setTagName(name);
+                    newTag.setName(name);
                     return tagRepository.save(newTag);
                 });
     }

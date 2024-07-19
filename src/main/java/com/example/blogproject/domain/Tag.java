@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "tags")
@@ -17,8 +19,9 @@ public class Tag {
     private Long id;
 
     @Column(unique = true, name = "tag_name")
-    private String tagName;
+    private String name;
 
     @ManyToMany(mappedBy = "tags")
-    private List<Post> posts;
+    private Set<Post> posts = new HashSet<>(); //태그는 중복 불가능
+
 }

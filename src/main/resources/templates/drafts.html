@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>임시 저장 글</title>
+  <link rel="stylesheet" th:href="@{/css/drafts.css}">
+</head>
+<body>
+<h1>임시 저장 글 목록</h1>
+<div th:if="${#lists.isEmpty(drafts)}">
+  <p>임시 저장된 글이 없습니다.</p>
+</div>
+<ul th:unless="${#lists.isEmpty(drafts)}">
+  <li th:each="draft : ${drafts}">
+    <a th:href="@{/edit/{id}(id=${draft.id})}" th:text="${draft.title}">임시 글 제목</a>
+    <span th:text="${#temporals.format(draft.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</span>
+  </li>
+</ul>
+<a href="/" class="back-link">홈으로</a>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.example.blogproject.service;
 
 import com.example.blogproject.domain.Post;
+import com.example.blogproject.domain.Tag;
 import com.example.blogproject.domain.User;
 import com.example.blogproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final TagService tagService;
 
     public Post savePost(Post post, boolean isDraft) {
         post.setDraft(isDraft);
@@ -66,8 +68,17 @@ public class PostService {
                 new IllegalArgumentException("게시글이 존재하지 않습니다."));
     }
 
-    public Post updatePost(Post post) {
-        return postRepository.save(post);
+    @Transactional
+    public void updatePost(Long id, Post updatedPost, String tagNames, boolean publish) {
+        Post post = getPostById(id);
+        post.setTitle(updatedPost.getTitle());
+        post.setContent(updatedPost.getContent());
+        post.setPublished(publish);
+
+//        List<Tag> tags = tagService.getOrCreateTags(tagNames);
+//        post.setTags(tags);
+
+        postRepository.save(post);
     }
 
 

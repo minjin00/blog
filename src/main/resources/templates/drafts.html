@@ -13,6 +13,7 @@
   <li th:each="draft : ${drafts}">
     <a th:href="@{/edit/{id}(id=${draft.id})}" th:text="${draft.title}">임시 글 제목</a>
     <span th:text="${#temporals.format(draft.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</span>
+    <p th:text="${#strings.abbreviate(draft.content, 100)}"></p>
   </li>
 </ul>
 <a href="/" class="back-link">홈으로</a>
